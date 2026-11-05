@@ -1,246 +1,265 @@
-
-
-
-
 (() => {
 "use strict";
-const $ = id => document.getElementById(id);
-const STORAGE_KEY = "peoplesMandateSave_v3";
 
-const copy = {
- en:{
-  eyebrow:"THE FUTURE IS DECIDED BY THE PEOPLE",heroTitle:'A nation.<br><em>A mandate.</em><br>A thousand decisions.',heroDesc:"Build a movement, contest an election and navigate the difficult business of governing a diverse nation.",begin:"BEGIN YOUR MANDATE",continue:"CONTINUE GAME",footnote:"A fictional political simulation inspired by Malaysia's parliamentary system.",setupEyebrow:"YOUR POLITICAL JOURNEY STARTS HERE",setupTitle:"Build your movement.",setupDesc:"Every government begins with an idea — and the people willing to stand behind it.",partyName:"MOVEMENT / PARTY NAME",tagline:"YOUR SLOGAN",ideology:"POLITICAL DIRECTION",reformist:"Reformist",reformistDesc:"Institutional reform and clean governance",centrist:"Centrist",centristDesc:"Pragmatic policies and broad consensus",social:"Social democratic",socialDesc:"Public services and economic fairness",conservative:"Conservative",conservativeDesc:"Tradition, continuity and stability",difficulty:"CAMPAIGN DIFFICULTY",accessible:"Accessible",standard:"Standard",challenging:"Challenging",formStart:"ESTABLISH YOUR MOVEMENT",yourMission:"Your mission",missionDesc:"Win public trust, contest 222 parliamentary seats and secure the confidence of the Dewan Rakyat.",parliament:"PARLIAMENT",majority:"SIMPLE MAJORITY",seats:"seats",fictionNote:"All parties, politicians and election events in this game are fictional.",campaignDesk:"CAMPAIGN HEADQUARTERS",campaignWeek:"CAMPAIGN WEEK",fieldStrategy:"FIELD STRATEGY",chooseMove:"Choose your next move",endWeek:"END CAMPAIGN WEEK",electoralMap:"ELECTORAL LANDSCAPE",regionalSupport:"Regional support",strong:"Strong",competitive:"Competitive",weak:"Needs work",campaignPhase:"PHASE 01 · CAMPAIGN",saveGame:"SAVE GAME ↗",electionNight:"THE COUNTING BEGINS",nationHasSpoken:"The nation has spoken.",electionDesc:"The ballots are counted. The balance of power is about to change.",officialResult:"SIMULATED GENERAL ELECTION RESULT",seatsWon:"SEATS WON",popularVote:"POPULAR VOTE",mandateStatus:"MANDATE STATUS",formGovernment:"PROCEED TO GOVERNMENT FORMATION",postElection:"POST-ELECTION NEGOTIATIONS",numbersGame:"The numbers game.",coalitionDesc:"No single party governs alone without a majority. Build a coalition and secure confidence.",yourSeats:"YOUR SEATS",availablePartners:"AVAILABLE PARTNERS",negotiate:"Negotiate a coalition",needed:"NEEDED",coalitionTotal:"COALITION SEAT TOTAL",confirmCoalition:"CONFIRM COALITION",confidenceSupply:"Confidence & supply",confidenceDesc:"A coalition agreement needs more than arithmetic. Partners expect cabinet representation and a shared policy agenda.",majorityThreshold:"MAJORITY THRESHOLD",hungNote:"A hung parliament is possible. If negotiations fail, the head of state may need to determine who is most likely to command confidence.",puttingCountry:"THE WORK OF GOVERNMENT",governingBegins:"Governing begins.",governDesc:"Your mandate is not a blank cheque. Every decision has consequences.",term:"GOVERNMENT TERM",cabinetAgenda:"CABINET AGENDA",nationalPriorities:"Set national priorities",advanceTerm:"ADVANCE TO NEXT QUARTER",nationalPulse:"NATIONAL PULSE",publicMood:"Public mood",governTip:"Keep the economy, public trust and coalition stability in balance. A government can fall before its term ends.",governPhase:"PHASE 04 · GOVERNANCE",chapterComplete:"CHAPTER COMPLETE",legacyScore:"LEGACY SCORE",playAgain:"PLAY ANOTHER TERM",returnTitle:"RETURN TO TITLE",footerDisclaimer:"FICTIONAL SIMULATION · NOT AN ACTUAL ELECTION FORECAST",actionsLeft:"ACTIONS LEFT",decisionLeft:"DECISIONS",noFunds:"Not enough campaign funds.",weekDone:"Campaign week completed.",coalitionFailed:"You need at least 112 seats to form a government.",coalitionSuccess:"Coalition agreement secured.",saved:"Game saved in this browser.",noSave:"No saved game found.",event:"CAMPAIGN DEVELOPMENT",governEvent:"NATIONAL DEVELOPMENT",won:"MAJORITY GOVERNMENT",hung:"HUNG PARLIAMENT",minority:"MINORITY POSITION",party:"Party",vote:"Vote",governmentFormed:"A government is formed.",governmentFailed:"Coalition talks collapsed. Your movement will return to opposition.",continueTerm:"Your government has completed its term.",governmentFell:"Your government lost public confidence.",scoreText:"Public trust, economic performance and stability shape your legacy.",next:"Next quarter",noActions:"No decisions remaining this quarter.",pruMap:"PARLIAMENTARY MAP (PRU 222 SEATS)",prnMap:"STATE ASSEMBLIES (PRN 600 SEATS)",accBal:"BANK ACCOUNT"
- },
- bm:{ eyebrow:"MASA DEPAN DITENTUKAN OLEH RAKYAT" }
+// --- 1. DATA ---
+const statesData = [
+  { id: "perlis", name: "Perlis", pop: 0.25, seats: 3, x: 80, y: 95, path: "M60,80 L100,80 L100,110 L60,110 Z" },
+  { id: "kedah", name: "Kedah", pop: 2.1, seats: 15, x: 95, y: 140, path: "M60,110 L130,110 L130,170 L60,170 Z" },
+  { id: "penang", name: "Penang", pop: 1.7, seats: 13, x: 60, y: 185, path: "M40,170 L80,170 L80,200 L40,200 Z" },
+  { id: "kelantan", name: "Kelantan", pop: 1.8, seats: 14, x: 175, y: 105, path: "M150,80 L200,80 L200,130 L150,130 Z" },
+  { id: "terengganu", name: "Terengganu", pop: 1.2, seats: 8, x: 175, y: 155, path: "M150,130 L200,130 L200,180 L150,180 Z" },
+  { id: "perak", name: "Perak", pop: 2.5, seats: 24, x: 115, y: 230, path: "M80,200 L150,200 L150,260 L80,260 Z" },
+  { id: "pahang", name: "Pahang", pop: 1.6, seats: 14, x: 185, y: 220, path: "M150,180 L220,180 L220,260 L150,260 Z" },
+  { id: "selangor", name: "Selangor", pop: 6.5, seats: 22, x: 115, y: 285, path: "M80,260 L150,260 L150,310 L80,310 Z" },
+  { id: "kl", name: "Kuala Lumpur", pop: 1.8, seats: 11, x: 110, y: 320, path: "M100,310 L120,310 L120,330 L100,330 Z" },
+  { id: "putrajaya", name: "Putrajaya", pop: 0.1, seats: 1, x: 137, y: 317, path: "M130,310 L145,310 L145,325 L130,325 Z" },
+  { id: "nsembilan", name: "N. Sembilan", pop: 1.1, seats: 8, x: 170, y: 330, path: "M150,310 L190,310 L190,350 L150,350 Z" },
+  { id: "melaka", name: "Melaka", pop: 0.9, seats: 6, x: 165, y: 365, path: "M150,350 L180,350 L180,380 L150,380 Z" },
+  { id: "johor", name: "Johor", pop: 3.7, seats: 26, x: 210, y: 355, path: "M180,310 L240,310 L240,400 L180,400 Z" },
+  { id: "sarawak", name: "Sarawak", pop: 2.8, seats: 31, x: 340, y: 220, path: "M280,180 L400,180 L400,260 L280,260 Z" },
+  { id: "sabah", name: "Sabah", pop: 3.9, seats: 25, x: 470, y: 240, path: "M420,200 L520,200 L520,280 L420,280 Z" }
+];
+
+const possibleComplaints = [
+  { id: "cost", text: "Cost of Living", cost: 1000, effect: 25 },
+  { id: "flood", text: "Flood Mitigation", cost: 1500, effect: 20 },
+  { id: "jobs", text: "Unemployment", cost: 800, effect: 15 },
+  { id: "corruption", text: "Corruption", cost: 500, effect: 30 }
+];
+
+// Initialize State Game Data
+statesData.forEach(st => {
+  st.gdp = Math.floor(Math.random() * 40000) + 15000; // GDP per capita
+  st.happiness = Math.floor(Math.random() * 20) + 40; // Start 40-60%
+  st.support = Math.floor(Math.random() * 20) + 20; // Player support %
+  
+  // Assign random complaints based on state wealth/size
+  st.complaints = [];
+  const numComplaints = Math.floor(Math.random() * 2) + 1; // 1 or 2 complaints
+  const shuffled = [...possibleComplaints].sort(() => 0.5 - Math.random());
+  for(let i=0; i<numComplaints; i++) {
+    st.complaints.push({ ...shuffled[i], resolved: false });
+  }
+});
+
+const game = {
+  month: 1,
+  maxMonths: 12,
+  energy: 100,
+  bank: 5000,
+  pc: 100,
+  selectedState: null,
 };
 
-const malaysiaStates = [
-  { id: "perlis", name: "Perlis", city: "Kangar", seats: 3, prn: 15, x: 1, y: 1, region: "north" },
-  { id: "kedah", name: "Kedah", city: "Alor Setar", seats: 15, prn: 36, x: 2, y: 1, region: "north" },
-  { id: "penang", name: "Pulau Pinang", city: "George Town", seats: 13, prn: 40, x: 1, y: 2, region: "north" },
-  { id: "kelantan", name: "Kelantan", city: "Kota Bharu", seats: 14, prn: 45, x: 4, y: 1, region: "east_coast" },
-  { id: "terengganu", name: "Terengganu", city: "Kuala Terengganu", seats: 8, prn: 32, x: 4, y: 2, region: "east_coast" },
-  { id: "perak", name: "Perak", city: "Ipoh", seats: 24, prn: 59, x: 2, y: 3, region: "central" },
-  { id: "pahang", name: "Pahang", city: "Kuantan", seats: 14, prn: 42, x: 3, y: 3, region: "east_coast" },
-  { id: "selangor", name: "Selangor", city: "Shah Alam", seats: 22, prn: 56, x: 2, y: 4, region: "central" },
-  { id: "kl", name: "Kuala Lumpur", city: "KL City", seats: 11, prn: 0, x: 2, y: 5, region: "central", isFT: true },
-  { id: "putrajaya", name: "Putrajaya", city: "Putrajaya", seats: 1, prn: 0, x: 3, y: 5, region: "central", isFT: true },
-  { id: "nsembilan", name: "N. Sembilan", city: "Seremban", seats: 8, prn: 36, x: 3, y: 4, region: "central" },
-  { id: "melaka", name: "Melaka", city: "Melaka City", seats: 6, prn: 28, x: 3, y: 5, region: "south" },
-  { id: "johor", name: "Johor", city: "Johor Bahru", seats: 26, prn: 56, x: 4, y: 5, region: "south" },
-  { id: "sarawak", name: "Sarawak", city: "Kuching", seats: 31, prn: 82, x: 5, y: 3, region: "borneo" },
-  { id: "labuan", name: "Labuan", city: "Victoria", seats: 1, prn: 0, x: 5, y: 2, region: "borneo", isFT: true },
-  { id: "sabah", name: "Sabah", city: "Kota Kinabalu", seats: 25, prn: 73, x: 6, y: 3, region: "borneo" }
-];
+// --- 2. UI FUNCTIONS ---
+const $ = id => document.getElementById(id);
 
-const regions = [{en:"Northern Peninsula",bm:"Semenanjung Utara",weight:34},{en:"Central Peninsula",bm:"Semenanjung Tengah",weight:42},{en:"Southern Peninsula",bm:"Semenanjung Selatan",weight:28},{en:"East Coast",bm:"Pantai Timur",weight:27},{en:"Sabah",bm:"Sabah",weight:25},{en:"Sarawak",bm:"Sarawak",weight:29},{en:"Federal Territories",bm:"Wilayah Persekutuan",weight:37}];
-const rivalParties = [{id:"national",en:"National Stability Front",bm:"Barisan Kestabilan Nasional",color:"#7890ad",seats:0, prn:0},{id:"people",en:"People's Welfare Party",bm:"Parti Kebajikan Rakyat",color:"#b87e72",seats:0, prn:0},{id:"regional",en:"Regional Alliance",bm:"Gabungan Wilayah",color:"#7da994",seats:0, prn:0},{id:"green",en:"Green Future Movement",bm:"Gerakan Masa Depan Hijau",color:"#a1a66e",seats:0, prn:0}];
+function updateUI() {
+  $("ui-month").textContent = `${game.month} / ${game.maxMonths}`;
+  $("ui-energy").textContent = `${game.energy}%`;
+  $("ui-pc").textContent = game.pc;
+  $("ui-bank").textContent = `RM ${game.bank.toLocaleString()}`;
 
-const campaignActions = [
- {id:"rally",icon:"◉",title:["Community town hall","Dialog komuniti"],desc:["Hold a public meeting and listen to local concerns.","Adakan pertemuan awam dan dengar kebimbangan penduduk."],cost:12,effect:{support:5,trust:2,regions:2}},
- {id:"policy",icon:"▤",title:["Publish policy blueprint","Terbitkan pelan dasar"],desc:["Present a credible plan for jobs, services and reform.","Bentangkan rancangan pekerjaan, perkhidmatan dan reformasi."],cost:18,effect:{trust:6,support:3}},
- {id:"ground",icon:"⌂",title:["Door-to-door outreach","Kempen dari rumah ke rumah"],desc:["Build grassroots networks across key constituencies.","Bina rangkaian akar umbi di kawasan tumpuan."],cost:10,effect:{support:4,regions:4}},
- {id:"media",icon:"◎",title:["National media interview","Temu bual media nasional"],desc:["Take your message to a wider national audience.","Sampaikan mesej kepada khalayak nasional."],cost:15,effect:{support:3,trust:3}},
- {id:"volunteer",icon:"✚",title:["Mobilise volunteers","Gerakkan sukarelawan"],desc:["Strengthen election-day organisation and local presence.","Perkukuh organisasi hari mengundi dan kehadiran setempat."],cost:13,effect:{regions:5,support:2}},
- {id:"audit",icon:"◇",title:["Transparency pledge","Ikrar ketelusan"],desc:["Commit to transparent procurement and public reporting.","Beriltizam terhadap perolehan telus dan laporan awam."],cost:8,effect:{trust:5,support:1}}
-];
+  // Map Heatmap (Colors based on Player Support)
+  document.querySelectorAll(".map-state").forEach(el => {
+    const st = statesData.find(s => s.id === el.id.replace("state-", ""));
+    if (st.support > 60) el.style.fill = "var(--gold)";
+    else if (st.support > 40) el.style.fill = "#a68d5c";
+    else if (st.support > 20) el.style.fill = "#4a5a75";
+    else el.style.fill = "#2a3a55";
+  });
 
-const policies = [
- {id:"jobs",icon:"▥",title:["Jobs & small business","Pekerjaan & perniagaan kecil"],desc:["Targeted support for SMEs and workforce training.","Sokongan bersasar kepada PKS dan latihan tenaga kerja."],effect:{economy:7,approval:4,stability:1}},
- {id:"health",icon:"✚",title:["Public healthcare","Kesihatan awam"],desc:["Improve access, primary care and hospital capacity.","Tingkatkan akses, penjagaan primer dan kapasiti hospital."],effect:{approval:7,economy:-2,trust:2}},
- {id:"education",icon:"▤",title:["Education & skills","Pendidikan & kemahiran"],desc:["Invest in schools, TVET and future-ready skills.","Labur dalam sekolah, TVET dan kemahiran masa hadapan."],effect:{approval:5,economy:3,trust:2}},
- {id:"integrity",icon:"◇",title:["Institutional integrity","Integriti institusi"],desc:["Strengthen oversight, procurement and accountability.","Perkukuh pemantauan, perolehan dan akauntabiliti."],effect:{trust:8,stability:3,approval:2}},
- {id:"cost",icon:"⌂",title:["Cost of living relief","Bantuan kos sara hidup"],desc:["Target relief while managing fiscal pressure.","Sediakan bantuan bersasar sambil mengurus tekanan fiskal."],effect:{approval:8,economy:-5,stability:-1}},
- {id:"climate",icon:"♧",title:["Climate resilience","Daya tahan iklim"],desc:["Fund flood mitigation and resilient infrastructure.","Biayai mitigasi banjir dan infrastruktur berdaya tahan."],effect:{economy:2,approval:4,trust:3}}
-];
-
-const events = [{en:"A cost-of-living debate dominates the news cycle.",bm:"Perbahasan kos sara hidup mendominasi berita.",effect:{support:-1,trust:0}},{en:"A well-received local visit brings new volunteers.",bm:"Lawatan tempatan yang mendapat sambutan membawa sukarelawan baharu.",effect:{support:2,trust:1}},{en:"A rival party questions your funding transparency.",bm:"Parti lawan mempersoalkan ketelusan dana anda.",effect:{trust:-2,support:-1}},{en:"A televised debate gives your movement national visibility.",bm:"Debat televisyen meningkatkan pendedahan nasional gerakan anda.",effect:{support:2,trust:2}},{en:"Heavy rain disrupts several campaign events.",bm:"Hujan lebat mengganggu beberapa acara kempen.",effect:{support:-1,regions:-1}}];
-const govEvents = [{en:"A regional flood emergency tests public services.",bm:"Kecemasan banjir wilayah menguji perkhidmatan awam.",effect:{approval:-5,economy:-2,trust:1}},{en:"Investor confidence improves after a stable quarter.",bm:"Keyakinan pelabur meningkat selepas suku tahun yang stabil.",effect:{economy:4,stability:2}},{en:"A procurement controversy raises questions in Parliament.",bm:"Kontroversi perolehan menimbulkan persoalan di Parlimen.",effect:{trust:-7,approval:-3,stability:-2}},{en:"A successful skills programme earns public praise.",bm:"Program kemahiran yang berjaya menerima pujian rakyat.",effect:{approval:4,economy:2}},{en:"Coalition partners disagree over a major bill.",bm:"Rakan gabungan tidak sependapat tentang rang undang-undang utama.",effect:{stability:-6,trust:-1}}];
-
-let state=null, lang="en", soundOn=true, toastTimer;
-const t=k=>copy[lang][k]||copy.en[k]||k;
-const clamp=(v,min=0,max=100)=>Math.max(min,Math.min(max,v));
-const rand=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
-const pick=a=>a[Math.floor(Math.random()*a.length)];
-const label=(arr)=>arr[lang==="en"?0:1];
-
-function toast(message){const el=$("toast");if(!el)return;el.textContent=message;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2400)}
-function showScreen(name){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  if (game.selectedState) renderStateInfo(game.selectedState);
   
-  // Convert internal name to HTML ID
-  let target = name;
-  if(name === "camp") target = "campaign";
-  if(name === "el") target = "election";
-  if(name === "gov") target = "govern";
-  if(name === "end") target = "ending";
+  // Disable buttons
+  document.querySelectorAll('.action-btn').forEach(btn => {
+    if (game.energy <= 0 && !btn.textContent.includes("Rest")) btn.disabled = true;
+    else btn.disabled = false;
+  });
+}
 
-  const el=$("screen-"+target);
-  if(el)el.classList.add("active");
-  window.scrollTo({top:0,behavior:"smooth"});
+function renderStateInfo(stateId) {
+  const st = statesData.find(s => s.id === stateId);
   
-  const bgMusic = $("bg-music");
-  if(bgMusic){
-    if(target==="title") bgMusic.pause();
-    else if(soundOn) bgMusic.play().catch(()=>{});
+  let happyColor = st.happiness > 70 ? "var(--green)" : st.happiness > 40 ? "var(--gold)" : "var(--red)";
+  
+  let html = `
+    <h3>${st.name}</h3>
+    <div class="metric-box">
+      <div><span>POPULATION</span><b>${st.pop}M</b></div>
+      <div><span>GDP / CAPITA</span><b>RM ${st.gdp.toLocaleString()}</b></div>
+    </div>
+    
+    <div class="data-row"><span>VOTER HAPPINESS</span> <b style="color:${happyColor}">${st.happiness}%</b></div>
+    <div class="happy-meter"><div class="happy-fill" style="width:${st.happiness}%; background:${happyColor}"></div></div>
+
+    <div class="data-row" style="margin-top:15px;"><span>YOUR SUPPORT</span> <b style="color:var(--gold)">${st.support}%</b></div>
+    <div class="happy-meter"><div class="happy-fill" style="width:${st.support}%; background:var(--gold)"></div></div>
+    
+    <div class="complaint-list">
+      <h4>VOTER COMPLAINTS</h4>
+  `;
+  
+  if (st.complaints.length === 0) {
+    html += `<p style="color:var(--green); font-size:12px;">No major complaints. The people are content.</p>`;
+  } else {
+    st.complaints.forEach((c, index) => {
+      if (c.resolved) {
+        html += `<button class="complaint-btn" disabled style="opacity:0.5; border-color:var(--green)">✅ ${c.text} (Resolved)</button>`;
+      } else {
+        html += `<button class="complaint-btn" onclick="resolveComplaint('${st.id}', ${index})">${c.text} <span>Cost: RM ${c.cost} | +${c.effect}% Happiness</span></button>`;
+      }
+    });
   }
-  render();
+  
+  html += `</div>`;
+  $("seat-info").innerHTML = html;
 }
 
-function applyLanguage(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;if(copy[lang]&&copy[lang][k])el.innerHTML=copy[lang][k]});const lt=$("language-toggle");if(lt)lt.textContent=lang==="en"?"BM":"EN";const bs=$("brand-subtitle");if(bs)bs.textContent=lang==="en"?"A MALAYSIAN POLITICAL SIMULATION":"SIMULASI POLITIK MALAYSIA";if(state)render()}
+// --- 3. MAP GENERATION & CHARACTER MOVEMENT ---
+function buildMap() {
+  let svgHTML = `<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">`;
+  statesData.forEach(s => {
+    svgHTML += `<path id="state-${s.id}" class="map-state" d="${s.path}" data-id="${s.id}" data-name="${s.name}"></path>`;
+  });
+  svgHTML += `</svg>`;
+  $("malaysia-svg-container").innerHTML = svgHTML + `<div id="player-token" class="hidden">👤</div>`;
 
-function createGame(form){
- const ideology=form.get("ideology"),difficulty=form.get("difficulty");
- state={phase:"camp",party:(form.get("party-name")||"").trim()||"People's Reform Alliance",tagline:(form.get("party-tagline")||"").trim(),ideology,difficulty,bank:50.00,week:1,actions:2,funds:difficulty==="easy"?115:difficulty==="hard"?82:100,support:25,trust:48,regions:regions.map(r=>({name:r.en,value:clamp(r.weight+(difficulty==="hard"?-5:difficulty==="easy"?5:0)+rand(-3,3))})),event:null,govEvent:null,playerSeats:0,playerVote:0,results:[],partners:[],selectedPartners:[],coalitionSeats:0,term:1,govActions:2,economy:52,approval:52,stability:55,govTrust:50,legacy:0,electionMap:{},prnMap:{}};
- if(ideology==="Reformist")state.trust=clamp(state.trust+5);
- if(ideology==="Social Democratic")state.approval=56;
- if(ideology==="Conservative")state.stability=59;
- showScreen("camp");nextCampaignEvent();
+  document.querySelectorAll(".map-state").forEach(el => {
+    el.addEventListener("click", () => {
+      document.querySelectorAll(".map-state").forEach(p => p.classList.remove("selected"));
+      el.classList.add("selected");
+      game.selectedState = el.dataset.id;
+      
+      // Move Player Token
+      const st = statesData.find(s => s.id === game.selectedState);
+      const token = $("player-token");
+      token.classList.remove("hidden");
+      token.style.left = `${st.x}px`;
+      token.style.top = `${st.y}px`;
+
+      renderStateInfo(game.selectedState);
+    });
+
+    el.addEventListener("mousemove", (e) => {
+      const tooltip = $("map-tooltip");
+      tooltip.classList.remove("hidden");
+      tooltip.style.left = (e.clientX + 15) + "px";
+      tooltip.style.top = (e.clientY + 15) + "px";
+      const st = statesData.find(s => s.id === el.dataset.id);
+      tooltip.innerHTML = `<b>${st.name}</b><br>GDP: RM ${st.gdp.toLocaleString()}<br>Happy: ${st.happiness}%`;
+    });
+
+    el.addEventListener("mouseleave", () => $("map-tooltip").classList.add("hidden"));
+  });
 }
 
-function statCard(title,value,suffix=""){return `<div class="stat-card"><span>${title}</span><b>${Math.round(value)}<small>${suffix}</small></b></div>`}
-function renderStats(govern=false){
-  const el=$(govern?"govern-stats":"campaign-stats");if(!state||!el)return;
-  el.innerHTML=govern
-    ?[statCard("ECONOMIC HEALTH",state.economy,"%"),statCard("PUBLIC APPROVAL",state.approval,"%"),statCard("PUBLIC TRUST",state.govTrust,"%"),statCard("COALITION STABILITY",state.stability,"%")].join("")
-    :[statCard(t("accBal"),"RM "+state.bank.toFixed(2),"M"), statCard("CAMPAIGN FUNDS",state.funds,"M"),statCard("PUBLIC SUPPORT",state.support,"%"),statCard("CREDIBILITY",state.trust,"%")].join("")
+// --- 4. ACTIONS & POLICIES ---
+window.resolveComplaint = (stateId, complaintIndex) => {
+  const st = statesData.find(s => s.id === stateId);
+  const complaint = st.complaints[complaintIndex];
+  
+  if (game.bank < complaint.cost) return alert("Not enough funds to resolve this complaint!");
+  
+  game.bank -= complaint.cost;
+  complaint.resolved = true;
+  st.happiness = Math.min(100, st.happiness + complaint.effect);
+  st.support = Math.min(100, st.support + 5); // Resolving issues slightly boosts your support too
+  
+  showModal("Complaint Addressed", `You allocated RM ${complaint.cost} to resolve "${complaint.text}" in ${st.name}. Happiness rose by ${complaint.effect}%.`);
+  updateUI();
+};
+
+window.doAction = (type) => {
+  if (type === 'rest') {
+    game.energy = Math.min(100, game.energy + 40);
+    updateUI();
+    return;
+  }
+
+  if (!game.selectedState) { alert("Select a state on the map first!"); return; }
+  const st = statesData.find(s => s.id === game.selectedState);
+
+  if (type === "rally") {
+    if (game.bank < 500) return alert("Not enough money!");
+    if (game.energy < 20) return alert("Too exhausted! Rest first.");
+    game.bank -= 500; game.energy -= 20;
+    st.support = Math.min(100, st.support + Math.floor(Math.random() * 5) + 3);
+    showModal("Rally Held", `You gave a speech in ${st.name}. Your support increased.`);
+  } 
+  else if (type === "ads") {
+    if (game.bank < 1500) return alert("Not enough money!");
+    if (game.energy < 10) return alert("Too exhausted!");
+    game.bank -= 1500; game.energy -= 10;
+    st.support = Math.min(100, st.support + Math.floor(Math.random() * 10) + 8);
+    showModal("Media Blitz", `Ads ran in ${st.name}. Support jumped significantly.`);
+  }
+  else if (type === "fundraise") {
+    if (game.energy < 10) return alert("Too exhausted!");
+    game.energy -= 10;
+    let raised = Math.floor(st.gdp / 100); // Higher GDP = more donations
+    game.bank += raised;
+    showModal("Fundraising Success", `You raised RM ${raised} from wealthy donors in ${st.name}.`);
+  }
+
+  updateUI();
+};
+
+// --- 5. TURN LOGIC ---
+$("btn-end-turn").addEventListener("click", () => {
+  if (game.energy < 20) {
+    showModal("Exhaustion!", "You must Rest before advancing to the next month.");
+    return;
+  }
+
+  // Finances
+  game.bank += 2500; // Salary
+  game.bank -= 1200; // Bills
+  
+  if (game.bank < 0) {
+    showModal("Bankrupt!", "You couldn't pay your household bills. Game Over.");
+    return;
+  }
+
+  game.energy = Math.min(100, game.energy + 20);
+  
+  // Rival parties campaign
+  statesData.forEach(st => {
+    if (Math.random() > 0.7) st.support = Math.max(0, st.support - 2);
+  });
+
+  game.month++;
+  
+  if (game.month > game.maxMonths) {
+    runElection();
+  } else {
+    updateUI();
+  }
+});
+
+// --- 6. ELECTION & MODAL ---
+function runElection() {
+  let seatsWon = 0;
+  statesData.forEach(st => {
+    // If your support is higher than 50%, you win the state's seats
+    if (st.support > 50) seatsWon += st.seats;
+  });
+
+  if (seatsWon >= 112) {
+    showModal("VICTORY!", `You won ${seatsWon} seats and became the Prime Minister!`);
+  } else {
+    showModal("ELECTION OVER", `You only won ${seatsWon} seats. You are now in the opposition.`);
+  }
 }
 
-function renderRegions(){const el=$("region-list");if(!state||!el)return;el.innerHTML=state.regions.map(r=>{const meta=regions.find(x=>x.en===r.name);const nm=lang==="en"?r.name:(meta?meta.bm:r.name);return `<div class="region-item"><span>${nm}</span><b>${Math.round(r.value)}%</b><div class="region-track"><i class="${r.value<30?"low":r.value<50?"mid":""}" style="width:${r.value}%"></i></div></div>`}).join("")}
-function nextCampaignEvent(){const e=pick(events);state.event={en:e.en,bm:e.bm,effect:e.effect};}
-function nextGovEvent(){const e=pick(govEvents);state.govEvent={en:e.en,bm:e.bm,effect:e.effect};}
-
-function renderCampaign(){
- if(!state)return;$("campaign-title").textContent=state.party;$("campaign-subtitle").textContent=state.tagline;$("week-number").textContent=`0${state.week} / 04`;$("actions-left").textContent=`${state.actions} ACTIONS LEFT`;
- renderStats();renderRegions();$("action-grid").innerHTML=campaignActions.map(a=>`<button class="action-card" data-action="${a.id}" ${state.actions<=0||state.funds<a.cost?"disabled":""}><span class="action-icon">${a.icon}</span><b>${label(a.title)}</b><small>${label(a.desc)}</small><span class="cost">COST RM ${a.cost}M</span></button>`).join("");
- $("campaign-event").innerHTML=`<span>EVENT</span><b>${state.event?state.event[lang]:""}</b>`;
- document.querySelectorAll("[data-action]").forEach(b=>b.addEventListener("click",()=>campaignAction(b.dataset.action)))
+function showModal(title, desc) {
+  $("modal-title").textContent = title;
+  $("modal-desc").textContent = desc;
+  $("modal").classList.remove("hidden");
 }
 
-function campaignAction(id){const a=campaignActions.find(x=>x.id===id);if(!a||state.actions<=0||state.funds<a.cost)return;state.funds-=a.cost;state.bank=Math.max(0,state.bank-(a.cost*0.1));state.actions--;const e=a.effect;state.support=clamp(state.support+(e.support||0));state.trust=clamp(state.trust+(e.trust||0));if(e.regions)state.regions.forEach(r=>r.value=clamp(r.value+e.regions+rand(-1,1)));renderCampaign();toast("Done");}
-function endCampaignWeek(){if(state.actions>0){state.support=clamp(state.support+1);state.trust=clamp(state.trust+1)}if(state.event&&state.event.effect){const ef=state.event.effect;state.support=clamp(state.support+(ef.support||0));state.trust=clamp(state.trust+(ef.trust||0));if(ef.regions)state.regions.forEach(r=>r.value=clamp(r.value+(ef.regions||0)))}if(state.week>=4){runElection();return}state.week++;state.actions=2;state.funds+=12;state.bank+=1.5;nextCampaignEvent();renderCampaign();toast("Week Done")}
+// --- INIT ---
+buildMap();
+updateUI();
 
-function runElection(){
- const totalWeight=state.regions.reduce((a,r)=>a+r.value,0)/state.regions.length;
- const score=clamp(state.support*.48+state.trust*.18+totalWeight*.28+rand(-5,5),8,72);
- let pSeats=0,pPRN=0; let rSeats=[0,0,0,0],rPRN=[0,0,0,0];
- state.electionMap={}; state.prnMap={};
- 
- malaysiaStates.forEach(st => {
-   let localScore=score+rand(-12,12); if(st.region==="borneo")localScore-=10; if(st.region==="east_coast")localScore-=6;
-   let won=Math.floor(st.seats*(clamp(localScore,5,80)/100)); if(Math.random()>0.5&&won<st.seats)won++; pSeats+=won;
-   state.electionMap[st.id]={player:won,total:st.seats,winner:won>(st.seats/2)?"player":"rival"};
-   let rem=st.seats-won; while(rem>0){let rIdx=pick([0,1,2,3]); if(st.region==="borneo"&&Math.random()>0.3)rIdx=2; else if(st.region==="east_coast"&&Math.random()>0.5)rIdx=1; rSeats[rIdx]++;rem--;}
-   
-   let prnWon=Math.floor(st.prn*(clamp(localScore,5,80)/100)); pPRN+=prnWon;
-   state.prnMap[st.id]={player:prnWon,total:st.prn,winner:prnWon>(st.prn/2)?"player":"rival"};
-   let prnRem=st.prn-prnWon; while(prnRem>0){let rIdx=pick([0,1,2,3]); if(st.region==="borneo"&&Math.random()>0.3)rIdx=2; else if(st.region==="east_coast"&&Math.random()>0.5)rIdx=1; rPRN[rIdx]++;prnRem--;}
- });
-
- state.playerSeats=pSeats; state.playerVote=clamp(score+rand(-4,4),5,70);
- const rivals=rivalParties.map((r,i)=>({...r,seats:rSeats[i],prn:rPRN[i]}));
- state.results=[{id:"player",name:state.party,color:"#d7b66d",seats:pSeats,prn:pPRN},...rivals];
- state.partners=rivals; state.selectedPartners=[]; state.phase="el"; showScreen("el");
-}
-
-function renderElection(){
- if(!state)return;
- $("player-seats").textContent=state.playerSeats; $("player-vote").textContent=Math.round(state.playerVote)+"%";
- $("majority-status").textContent=state.playerSeats>=112?"MAJORITY":state.playerSeats>=80?"KINGMAKER":"MINORITY";
- $("seat-bar").innerHTML=state.results.map(p=>`<i style="width:${p.seats/222*100}%;background:${p.color}"></i>`).join("");
- $("result-parties").innerHTML=state.results.map(p=>`<div class="result-party"><span>${p.name}</span><b>${p.seats}</b></div>`).join("");
-
- const mapPru=$("map-pru");
- if(mapPru) mapPru.innerHTML=malaysiaStates.map(st=>{
-   let color="#1a2639"; let data=state.electionMap[st.id];
-   if(data)color=data.winner==="player"?"#d7b66d":rivalParties[0].color;
-   return `<div class="state-tile" style="grid-column:${st.x};grid-row:${st.y};background:${color};color:${data&&data.winner==='player'?'#000':'#fff'};"><span>${st.name.substring(0,3).toUpperCase()}</span><b>${data?data.player:0}</b></div>`;
- }).join("");
-
- const mapPrn=$("map-prn");
- if(mapPrn) mapPrn.innerHTML=malaysiaStates.map(st=>{
-   if(st.prn===0)return ""; let color="#1a2639"; let data=state.prnMap[st.id];
-   if(data)color=data.winner==="player"?"#d7b66d":rivalParties[0].color;
-   return `<div class="state-tile" style="grid-column:${st.x};grid-row:${st.y};background:${color};color:${data&&data.winner==='player'?'#000':'#fff'};"><span>${st.name.substring(0,3).toUpperCase()}</span><b>${data?data.player:0}</b></div>`;
- }).join("");
-}
-
-function renderCoalition(){
- if(!state)return; if(!Array.isArray(state.selectedPartners))state.selectedPartners=[];
- $("coalition-own-seats").textContent=state.playerSeats;
- const total=state.playerSeats+state.partners.filter(p=>state.selectedPartners.includes(p.id)).reduce((a,p)=>a+p.seats,0);
- state.coalitionSeats=total; $("coalition-total").textContent=`${total} / 112`; $("coalition-progress").style.width=Math.min(100,total/112*100)+"%";
- $("partner-list").innerHTML=state.partners.map(p=>`<label class="partner-row"><span><span class="partner-name">${p.en}</span></span><b class="partner-seats">${p.seats}</b><input type="checkbox" data-partner="${p.id}" ${state.selectedPartners.includes(p.id)?"checked":""}></label>`).join("");
- document.querySelectorAll("[data-partner]").forEach(c=>c.addEventListener("change",()=>{state.selectedPartners=Array.from(document.querySelectorAll("[data-partner]:checked")).map(x=>x.dataset.partner);renderCoalition()}));
- $("coalition-hint").textContent=total>=112?"Success":"Need 112";
-}
-
-function confirmCoalition(){if(state.coalitionSeats<112){toast("Need 112");return}state.phase="gov";state.govActions=2;state.bank+=15;nextGovEvent();showScreen("gov");toast("Formed +RM15M")}
-
-function renderGovern(){
- if(!state)return;
- $("term-number").textContent=`0${state.term} / 04`; $("govern-actions-left").textContent=`${state.govActions} DECISIONS`;
- renderStats(true);
- $("policy-grid").innerHTML=policies.map(p=>`<button class="action-card" data-policy="${p.id}" ${state.govActions<=0?"disabled":""}><span class="action-icon">${p.icon}</span><b>${label(p.title)}</b><small>${label(p.desc)}</small></button>`).join("");
- document.querySelectorAll("[data-policy]").forEach(b=>b.addEventListener("click",()=>applyPolicy(b.dataset.policy)));
- $("govern-event").innerHTML=`<span>EVENT</span><b>${state.govEvent?state.govEvent[lang]:""}</b>`;
- renderMood();
-}
-
-function renderMood(){
- const el=$("mood-list"); if(!state||!el)return;
- const metrics=[["ECONOMY",state.economy],["APPROVAL",state.approval],["TRUST",state.govTrust],["STABILITY",state.stability]];
- el.innerHTML=metrics.map(m=>`<div class="status-row"><div><span>${m[0]}</span><b>${Math.round(m[1])}%</b></div><div class="status-track"><i class="${m[1]<35?"danger":m[1]<50?"warn":""}" style="width:${m[1]}%"></i></div></div>`).join("");
-}
-
-function applyPolicy(id){
- if(state.govActions<=0)return; const p=policies.find(x=>x.id===id); if(!p)return;
- state.govActions--; Object.entries(p.effect).forEach(([k,v])=>{const key=k==="trust"?"govTrust":k;if(typeof state[key]==="number")state[key]=clamp(state[key]+v)});
- state.bank+=2; renderGovern(); toast("+RM2M");
-}
-
-function nextTerm(){
- const e=pick(govEvents); state.govEvent={en:e.en,bm:e.bm,effect:e.effect};
- Object.entries(e.effect).forEach(([k,v])=>{const key=k==="trust"?"govTrust":k;if(typeof state[key]==="number")state[key]=clamp(state[key]+v)});
- state.term++; state.bank+=5;
- if(state.stability<18||state.approval<15||state.term>4){finishGame();return}
- state.govActions=2; renderGovern(); toast("+RM5M");
-}
-
-function finishGame(){
- state.legacy=Math.round((state.economy+state.approval+state.govTrust+state.stability)/4);
- const success=state.stability>=35&&state.approval>=30;
- $("ending-title").textContent=success?"Mandate remembered.":"Mandate fractured.";
- $("ending-description").textContent=success?"Term complete.":"Government fell.";
- $("legacy-score").textContent=String(state.legacy).padStart(3,"0");
- $("legacy-breakdown").innerHTML="Score. Final bank: RM "+state.bank.toFixed(2)+"M";
- state.phase="end"; showScreen("end");
-}
-
-function saveGame(){if(!state)return;try{localStorage.setItem(STORAGE_KEY,JSON.stringify({state,lang}));toast("Saved")}catch(e){toast("Error")}}
-function loadGame(){const raw=localStorage.getItem(STORAGE_KEY);if(!raw){toast("No save");return}try{const saved=JSON.parse(raw);state=saved.state;lang=saved.lang||lang;if(!Array.isArray(state.selectedPartners))state.selectedPartners=[];applyLanguage();showScreen(state.phase);toast("Loaded")}catch(e){toast("Error")}}
-
-function render(){
- if(!state)return;
- if(state.phase==="camp")renderCampaign();
- else if(state.phase==="el")renderElection();
- else if(state.phase==="coalition")renderCoalition();
- else if(state.phase==="gov")renderGovern();
-}
-
-const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn)};
-on("new-game-btn","click",()=>showScreen("setup"));
-on("continue-btn","click",loadGame);
-on("language-toggle","click",()=>{lang=lang==="en"?"bm":"en";applyLanguage()});
-on("sound-toggle","click",()=>{soundOn=!soundOn;const bgMusic=$("bg-music");if(bgMusic){if(soundOn)bgMusic.play().catch(()=>{});else bgMusic.pause();}toast(soundOn?"Sound on":"Muted")});
-on("setup-form","submit",e=>{e.preventDefault();createGame(new FormData(e.currentTarget))});
-on("next-week-btn","click",endCampaignWeek);
-on("save-btn","click",saveGame); on("save-btn-2","click",saveGame);
-on("coalition-btn","click",()=>{state.phase="coalition";state.selectedPartners=[];showScreen("coalition")});
-on("confirm-coalition","click",confirmCoalition);
-on("next-term-btn","click",nextTerm);
-on("restart-btn","click",()=>showScreen("setup"));
-on("title-btn","click",()=>{state=null;showScreen("title")});
-
-applyLanguage();
 })();
