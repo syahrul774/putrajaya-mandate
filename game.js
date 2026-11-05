@@ -8,7 +8,23 @@ const ev=[{t:["Cost of living debate","Kos hidup"],e:{s:-1,t:0}},{t:["Local visi
 const gev=[{t:["Flood emergency","Banjir"],e:{ap:-5,ec:-2,t:1}},{t:["Investor confidence","Pelabur"],e:{ec:4,st:2}},{t:["Procurement controversy","Perolehan"],e:{t:-7,ap:-3,st:-2}},{t:["Skills programme praise","Kemahiran"],e:{ap:4,ec:2}},{t:["Coalition disagrees","Gabungan"],e:{st:-6,t:-1}}];
 let state=null,lang="en",bgMusic=null,tTimer=null;const t=k=>copy[lang][k]||copy.en[k]||k;const cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));const rd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const pk=a=>a[Math.floor(Math.random()*a.length)];const lb=a=>a[lang==="en"?0:1];
 function toast(m){const el=$("toast");if(!el)return;el.textContent=m;el.classList.add("show");clearTimeout(tTimer);tTimer=setTimeout(()=>el.classList.remove("show"),2400)}
-function nav(n){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));const el=$("screen-"+n);if(el)el.classList.add("active");window.scrollTo({top:0,behavior:"smooth"});if(bgMusic){if(n==="title")bgMusic.pause();else bgMusic.play().catch(()=>{})}render()}
+function nav(n){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  let target = n;
+  if(n === "camp") target = "campaign";
+  if(n === "el") target = "election";
+  if(n === "gov") target = "govern";
+  if(n === "end") target = "ending";
+  
+  const el=$("screen-"+target);
+  if(el)el.classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(bgMusic){
+    if(target==="title") bgMusic.pause(); 
+    else bgMusic.play().catch(()=>{});
+  }
+  render();
+}if(el)el.classList.add("active");window.scrollTo({top:0,behavior:"smooth"});if(bgMusic){if(n==="title")bgMusic.pause();else bgMusic.play().catch(()=>{})}render()}
 function lng(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;if(copy[lang]&&copy[lang][k])el.innerHTML=copy[lang][k]});const lt=$("language-toggle");if(lt)lt.textContent=lang==="en"?"BM":"EN";if(state)render()}
 function start(e){if(e)e.preventDefault();const f=$("setup-form");const fd=new FormData(f);state={phase:"camp",party:(fd.get("party-name")||"").trim()||"People's Reform",tag:(fd.get("party-tagline")||"").trim(),bank:50,w:1,act:2,fnd:100,sup:25,trs:48,rg:rg.map(r=>({n:r.n,v:cl(r.w+rd(-3,3))})),evt:null,gev:null,seats:0,vote:0,res:[],part:[],sel:[],cSeats:0,term:1,gAct:2,ec:52,ap:52,st:55,gt:50,leg:0,eMap:{},pMap:{}};nav("camp");nEv()}
 function sCard(t,v,s=""){return `<div class="stat-card"><span>${t}</span><b>${Math.round(v)}<small>${s}</small></b></div>`}
@@ -32,5 +48,8 @@ function save(){if(!state)return;try{localStorage.setItem("PM_v3",JSON.stringify
 function load(){const raw=localStorage.getItem("PM_v3");if(!raw){toast("No save");return}try{const s=JSON.parse(raw);state=s.state;lang=s.lang||lang;if(!Array.isArray(state.sel))state.sel=[];lng();nav(state.phase==="camp"?"camp":state.phase==="el"?"election":state.phase==="coalition"?"coalition":state.phase==="gov"?"govern":"ending");toast("Loaded")}catch(e){toast("Error")}}
 function render(){if(!state)return;if(state.phase==="camp")rCamp();else if(state.phase==="el")rEl();else if(state.phase==="coalition")rCoal();else if(state.phase==="gov")rGov()}
 const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn)};
-on("new-game-btn","click",()=>nav("setup"));on("continue-btn","click",load);on("language-toggle","click",()=>{lang=lang==="en"?"bm":"en";lng()});on("sound-toggle","click",()=>{if(bgMusic){if(bgMusic.paused){bgMusic.play();toast("Music On")}else{bgMusic.pause();toast("Music Off")}}});on("setup-form","submit",start);on("next-week-btn","click",endW);on("save-btn","click",save);on("save-btn-2","click",save);on("coalition-btn","click",()=>{state.phase="coalition";state.sel=[];nav("coalition")});on("confirm-coalition","click",confCoal);on("next-term-btn","click",nTerm);on("restart-btn","click",()=>nav("setup"));on("title-btn","click",()=>{state=null;nav("title")});
+on("new-game-btn","click",()=>{
+  state = { phase: "setup" };
+  nav("setup");
+});on("continue-btn","click",load);on("language-toggle","click",()=>{lang=lang==="en"?"bm":"en";lng()});on("sound-toggle","click",()=>{if(bgMusic){if(bgMusic.paused){bgMusic.play();toast("Music On")}else{bgMusic.pause();toast("Music Off")}}});on("setup-form","submit",start);on("next-week-btn","click",endW);on("save-btn","click",save);on("save-btn-2","click",save);on("coalition-btn","click",()=>{state.phase="coalition";state.sel=[];nav("coalition")});on("confirm-coalition","click",confCoal);on("next-term-btn","click",nTerm);on("restart-btn","click",()=>nav("setup"));on("title-btn","click",()=>{state=null;nav("title")});
 bgMusic=$("bg-music");if(bgMusic)bgMusic.volume=0.4;lng();})();
