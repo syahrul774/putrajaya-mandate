@@ -58,13 +58,9 @@
         <div class="setup-layout">
           <form id="setup-form" class="panel setup-form">
             <label for="party-name" data-i18n="partyName">MOVEMENT / PARTY NAME</label>
-            <!-- FIXED: Added name="party-name" -->
             <input id="party-name" name="party-name" maxlength="32" value="People's Reform Alliance" required>
-            
             <label for="party-tagline" data-i18n="tagline">YOUR SLOGAN</label>
-            <!-- FIXED: Added name="party-tagline" -->
             <input id="party-tagline" name="party-tagline" maxlength="58" value="A fair future for everyone">
-            
             <label data-i18n="ideology">POLITICAL DIRECTION</label>
             <div class="choice-grid">
               <label class="choice-card"><input type="radio" name="ideology" value="Reformist" checked><span class="choice-symbol">✳</span><b data-i18n="reformist">Reformist</b><small data-i18n="reformistDesc">Institutional reform and clean governance</small></label>
@@ -72,18 +68,14 @@
               <label class="choice-card"><input type="radio" name="ideology" value="Social Democratic"><span class="choice-symbol">✚</span><b data-i18n="social">Social democratic</b><small data-i18n="socialDesc">Public services and economic fairness</small></label>
               <label class="choice-card"><input type="radio" name="ideology" value="Conservative"><span class="choice-symbol">⚑</span><b data-i18n="conservative">Conservative</b><small data-i18n="conservativeDesc">Tradition, continuity and stability</small></label>
             </div>
-            
             <label data-i18n="difficulty">CAMPAIGN DIFFICULTY</label>
             <div class="difficulty-row">
               <label><input type="radio" name="difficulty" value="easy"><span data-i18n="accessible">Accessible</span></label>
-              <!-- FIXED: Changed value to "standard" to match JS logic -->
               <label><input type="radio" name="difficulty" value="standard" checked><span data-i18n="standard">Standard</span></label>
               <label><input type="radio" name="difficulty" value="hard"><span data-i18n="challenging">Challenging</span></label>
             </div>
-            
             <button class="primary-button full-width" type="submit"><span data-i18n="formStart">ESTABLISH YOUR MOVEMENT</span><b>↗</b></button>
           </form>
-          
           <aside class="panel setup-aside">
             <div class="aside-number">01 / 04</div><div class="aside-rule"></div>
             <h3 data-i18n="yourMission">Your mission</h3>
@@ -115,6 +107,10 @@
       <section id="screen-election" class="screen">
         <div class="election-intro"><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="electionNight">THE COUNTING BEGINS</span></div><h2 data-i18n="nationHasSpoken">The nation has spoken.</h2><p data-i18n="electionDesc">The ballots are counted. The balance of power is about to change.</p></div>
         <div class="election-result panel"><div class="result-topline"><span data-i18n="officialResult">SIMULATED GENERAL ELECTION RESULT</span><span>GE 2026</span></div><div class="result-main"><div><div class="big-result" id="player-seats">00</div><span data-i18n="seatsWon">SEATS WON</span></div><div class="result-divider"></div><div><div class="big-result" id="player-vote">0%</div><span data-i18n="popularVote">POPULAR VOTE</span></div><div class="result-divider"></div><div><div class="big-result" id="majority-status">—</div><span data-i18n="mandateStatus">MANDATE STATUS</span></div></div><div class="seat-bar" id="seat-bar"></div><div id="result-parties" class="result-parties"></div></div>
+        <div class="panel parliament-chart-panel" style="margin-top:24px">
+          <div class="panel-heading"><div><span class="panel-kicker">DEWAN RAKYAT · 222 SEATS</span><h3>Parliament seat chart</h3></div></div>
+          <div class="parliament-chart" id="parliament-chart"></div>
+        </div>
         <div class="result-actions"><button class="primary-button" id="coalition-btn"><span data-i18n="formGovernment">PROCEED TO GOVERNMENT FORMATION</span><b>↗</b></button></div>
       </section>
 
@@ -140,6 +136,20 @@
     <footer class="site-footer"><span>THE PEOPLE'S MANDATE <i>© 2026</i></span><span data-i18n="footerDisclaimer">FICTIONAL SIMULATION · NOT AN ACTUAL ELECTION FORECAST</span></footer>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
+
+  <!-- FIRST-TIME TUTORIAL OVERLAY -->
+  <div class="tutorial-overlay" id="tutorial-overlay" aria-hidden="true">
+    <div class="tutorial-card">
+      <div class="tutorial-step" id="tutorial-step">01 / 03</div>
+      <h3 id="tutorial-title">Welcome to The People's Mandate</h3>
+      <p id="tutorial-body">You will build a political movement, fight a general election, negotiate a coalition and govern Malaysia for up to four quarters.</p>
+      <div class="tutorial-actions">
+        <button class="secondary-button" id="tutorial-skip">SKIP</button>
+        <button class="primary-button" id="tutorial-next">NEXT →</button>
+      </div>
+    </div>
+  </div>
+
   <script src="game.js"></script>
 </body>
 </html>
