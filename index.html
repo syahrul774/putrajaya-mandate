@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1424">
+  <meta name="description" content="The People's Mandate — a Malaysian political strategy simulation.">
+  <title>The People's Mandate</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="The People's Mandate home">
+        <span class="brand-mark">PM</span>
+        <span><strong>THE PEOPLE'S MANDATE</strong><small id="brand-subtitle">A MALAYSIAN POLITICAL SIMULATION</small></span>
+      </a>
+      <div class="top-actions">
+        <span class="live-dot"></span><span class="season-label" id="season-label">GENERAL ELECTION · 2026</span>
+        <button class="language-toggle" id="language-toggle" type="button">BM</button>
+        <button class="icon-button" id="sound-toggle" type="button" aria-label="Toggle sound" title="Sound effects">♫</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="screen-title" class="screen active title-screen">
+        <div class="title-grid">
+          <div class="title-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="eyebrow">THE FUTURE IS DECIDED BY THE PEOPLE</span></div>
+            <h1 data-i18n="heroTitle">A nation.<br><em>A mandate.</em><br>A thousand decisions.</h1>
+            <p class="hero-description" data-i18n="heroDesc">Build a movement, contest an election and navigate the difficult business of governing a diverse nation.</p>
+            <div class="title-buttons">
+              <button class="primary-button" id="new-game-btn"><span data-i18n="begin">BEGIN YOUR MANDATE</span><b>↗</b></button>
+              <button class="secondary-button" id="continue-btn"><span data-i18n="continue">CONTINUE GAME</span></button>
+            </div>
+            <div class="title-footnote"><span>01</span><span data-i18n="footnote">A fictional political simulation inspired by Malaysia's parliamentary system.</span></div>
+          </div>
+          <div class="hero-art" aria-label="Abstract illustration of parliament">
+            <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+            <div class="sun-disc"></div>
+            <div class="parliament">
+              <div class="parliament-roof"></div><div class="parliament-dome"></div>
+              <div class="parliament-body"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="parliament-base"></div>
+            </div>
+            <div class="art-caption"><span>03°08' N</span><span>KUALA LUMPUR · MALAYSIA</span></div>
+            <div class="art-stamp">THE<br>PEOPLE<br><b>DECIDE.</b></div>
+          </div>
+        </div>
+        <div class="title-bottom"><span>STRATEGY · ELECTIONS · GOVERNANCE</span><span>AN ORIGINAL INTERACTIVE EXPERIENCE</span><span>EST. 2026</span></div>
+      </section>
+
+      <section id="screen-setup" class="screen">
+        <div class="section-heading"><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="setupEyebrow">YOUR POLITICAL JOURNEY STARTS HERE</span></div><h2 data-i18n="setupTitle">Build your movement.</h2><p data-i18n="setupDesc">Every government begins with an idea — and the people willing to stand behind it.</p></div>
+        <div class="setup-layout">
+          <form id="setup-form" class="panel setup-form">
+            <label for="party-name" data-i18n="partyName">MOVEMENT / PARTY NAME</label>
+            <input id="party-name" maxlength="32" value="People's Reform Alliance" required>
+            <label for="party-tagline" data-i18n="tagline">YOUR SLOGAN</label>
+            <input id="party-tagline" maxlength="58" value="A fair future for everyone">
+            <label data-i18n="ideology">POLITICAL DIRECTION</label>
+            <div class="choice-grid">
+              <label class="choice-card"><input type="radio" name="ideology" value="Reformist" checked><span class="choice-symbol">✳</span><b data-i18n="reformist">Reformist</b><small data-i18n="reformistDesc">Institutional reform and clean governance</small></label>
+              <label class="choice-card"><input type="radio" name="ideology" value="Centrist"><span class="choice-symbol">◈</span><b data-i18n="centrist">Centrist</b><small data-i18n="centristDesc">Pragmatic policies and broad consensus</small></label>
+              <label class="choice-card"><input type="radio" name="ideology" value="Social Democratic"><span class="choice-symbol">✚</span><b data-i18n="social">Social democratic</b><small data-i18n="socialDesc">Public services and economic fairness</small></label>
+              <label class="choice-card"><input type="radio" name="ideology" value="Conservative"><span class="choice-symbol">⚑</span><b data-i18n="conservative">Conservative</b><small data-i18n="conservativeDesc">Tradition, continuity and stability</small></label>
+            </div>
+            <label data-i18n="difficulty">CAMPAIGN DIFFICULTY</label>
+            <div class="difficulty-row">
+              <label><input type="radio" name="difficulty" value="easy"><span data-i18n="accessible">Accessible</span></label>
+              <label><input type="radio" name="difficulty" value="normal" checked><span data-i18n="standard">Standard</span></label>
+              <label><input type="radio" name="difficulty" value="hard"><span data-i18n="challenging">Challenging</span></label>
+            </div>
+            <button class="primary-button full-width" type="submit"><span data-i18n="formStart">ESTABLISH YOUR MOVEMENT</span><b>↗</b></button>
+          </form>
+          <aside class="panel setup-aside">
+            <div class="aside-number">01 / 04</div><div class="aside-rule"></div>
+            <h3 data-i18n="yourMission">Your mission</h3>
+            <p data-i18n="missionDesc">Win public trust, contest 222 parliamentary seats and secure the confidence of the Dewan Rakyat.</p>
+            <div class="mini-stat"><span data-i18n="parliament">PARLIAMENT</span><b>222 <small data-i18n="seats">seats</small></b></div>
+            <div class="mini-stat"><span data-i18n="majority">SIMPLE MAJORITY</span><b>112 <small data-i18n="seats">seats</small></b></div>
+            <div class="aside-note" data-i18n="fictionNote">All parties, politicians and election events in this game are fictional.</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="screen-campaign" class="screen game-screen">
+        <div class="game-header"><div><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="campaignDesk">CAMPAIGN HEADQUARTERS</span></div><h2 id="campaign-title">The campaign begins.</h2><p id="campaign-subtitle"></p></div><div class="turn-pill"><span data-i18n="campaignWeek">CAMPAIGN WEEK</span><b id="week-number">01 / 04</b></div></div>
+        <div class="dashboard-stats" id="campaign-stats"></div>
+        <div class="campaign-layout">
+          <div class="panel campaign-main">
+            <div class="panel-heading"><div><span class="panel-kicker" data-i18n="fieldStrategy">FIELD STRATEGY</span><h3 data-i18n="chooseMove">Choose your next move</h3></div><span class="small-counter" id="actions-left">2 ACTIONS LEFT</span></div>
+            <div class="action-grid" id="action-grid"></div>
+            <div class="event-box" id="campaign-event"></div>
+            <button class="primary-button full-width" id="next-week-btn"><span data-i18n="endWeek">END CAMPAIGN WEEK</span><b>→</b></button>
+          </div>
+          <aside class="panel region-panel"><div class="panel-heading"><div><span class="panel-kicker" data-i18n="electoralMap">ELECTORAL LANDSCAPE</span><h3 data-i18n="regionalSupport">Regional support</h3></div></div><div id="region-list" class="region-list"></div><div class="map-legend"><span><i class="legend-dot high"></i><span data-i18n="strong">Strong</span></span><span><i class="legend-dot mid"></i><span data-i18n="competitive">Competitive</span></span><span><i class="legend-dot low"></i><span data-i18n="weak">Needs work</span></span></div></aside>
+        </div>
+        <div class="bottom-game-nav"><span data-i18n="campaignPhase">PHASE 01 · CAMPAIGN</span><button class="text-button" id="save-btn" data-i18n="saveGame">SAVE GAME ↗</button></div>
+      </section>
+
+      <section id="screen-election" class="screen">
+        <div class="election-intro"><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="electionNight">THE COUNTING BEGINS</span></div><h2 data-i18n="nationHasSpoken">The nation has spoken.</h2><p data-i18n="electionDesc">The ballots are counted. The balance of power is about to change.</p></div>
+        <div class="election-result panel"><div class="result-topline"><span data-i18n="officialResult">SIMULATED GENERAL ELECTION RESULT</span><span>GE 2026</span></div><div class="result-main"><div><div class="big-result" id="player-seats">00</div><span data-i18n="seatsWon">SEATS WON</span></div><div class="result-divider"></div><div><div class="big-result" id="player-vote">0%</div><span data-i18n="popularVote">POPULAR VOTE</span></div><div class="result-divider"></div><div><div class="big-result" id="majority-status">—</div><span data-i18n="mandateStatus">MANDATE STATUS</span></div></div><div class="seat-bar" id="seat-bar"></div><div id="result-parties" class="result-parties"></div></div>
+        <div class="result-actions"><button class="primary-button" id="coalition-btn"><span data-i18n="formGovernment">PROCEED TO GOVERNMENT FORMATION</span><b>↗</b></button></div>
+      </section>
+
+      <section id="screen-coalition" class="screen game-screen">
+        <div class="game-header"><div><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="postElection">POST-ELECTION NEGOTIATIONS</span></div><h2 data-i18n="numbersGame">The numbers game.</h2><p data-i18n="coalitionDesc">No single party governs alone without a majority. Build a coalition and secure confidence.</p></div><div class="turn-pill"><span data-i18n="yourSeats">YOUR SEATS</span><b id="coalition-own-seats">0</b></div></div>
+        <div class="coalition-layout"><div class="panel coalition-panel"><div class="panel-heading"><div><span class="panel-kicker" data-i18n="availablePartners">AVAILABLE PARTNERS</span><h3 data-i18n="negotiate">Negotiate a coalition</h3></div><span class="small-counter">112 <span data-i18n="needed">NEEDED</span></span></div><div id="partner-list"></div><div class="coalition-total"><span data-i18n="coalitionTotal">COALITION SEAT TOTAL</span><b id="coalition-total">0 / 112</b></div><div class="seat-progress"><span id="coalition-progress"></span></div><button class="primary-button full-width" id="confirm-coalition"><span data-i18n="confirmCoalition">CONFIRM COALITION</span><b>↗</b></button><p class="form-hint" id="coalition-hint"></p></div><aside class="panel coalition-aside"><div class="aside-number">02 / 04</div><h3 data-i18n="confidenceSupply">Confidence & supply</h3><p data-i18n="confidenceDesc">A coalition agreement needs more than arithmetic. Partners expect cabinet representation and a shared policy agenda.</p><div class="mini-stat"><span data-i18n="majorityThreshold">MAJORITY THRESHOLD</span><b>112 / 222</b></div><div class="aside-note" data-i18n="hungNote">A hung parliament is possible. If negotiations fail, the head of state may need to determine who is most likely to command confidence.</div></aside></div>
+      </section>
+
+      <section id="screen-govern" class="screen game-screen">
+        <div class="game-header"><div><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="puttingCountry">THE WORK OF GOVERNMENT</span></div><h2 data-i18n="governingBegins">Governing begins.</h2><p data-i18n="governDesc">Your mandate is not a blank cheque. Every decision has consequences.</p></div><div class="turn-pill"><span data-i18n="term">GOVERNMENT TERM</span><b id="term-number">01 / 04</b></div></div>
+        <div class="dashboard-stats" id="govern-stats"></div>
+        <div class="govern-layout"><div class="panel govern-main"><div class="panel-heading"><div><span class="panel-kicker" data-i18n="cabinetAgenda">CABINET AGENDA</span><h3 data-i18n="nationalPriorities">Set national priorities</h3></div><span class="small-counter" id="govern-actions-left">2 DECISIONS</span></div><div id="policy-grid" class="action-grid"></div><div id="govern-event" class="event-box"></div><button class="primary-button full-width" id="next-term-btn"><span data-i18n="advanceTerm">ADVANCE TO NEXT QUARTER</span><b>→</b></button></div><aside class="panel status-panel"><div class="panel-heading"><div><span class="panel-kicker" data-i18n="nationalPulse">NATIONAL PULSE</span><h3 data-i18n="publicMood">Public mood</h3></div></div><div id="mood-list"></div><div class="aside-note" data-i18n="governTip">Keep the economy, public trust and coalition stability in balance. A government can fall before its term ends.</div></aside></div>
+        <div class="bottom-game-nav"><span data-i18n="governPhase">PHASE 04 · GOVERNANCE</span><button class="text-button" id="save-btn-2" data-i18n="saveGame">SAVE GAME ↗</button></div>
+      </section>
+
+      <section id="screen-ending" class="screen">
+        <div class="ending-content"><div class="eyebrow"><span class="eyebrow-line"></span><span data-i18n="chapterComplete">CHAPTER COMPLETE</span></div><h2 id="ending-title">A mandate remembered.</h2><p id="ending-description"></p><div class="ending-score panel"><span data-i18n="legacyScore">LEGACY SCORE</span><b id="legacy-score">000</b><div id="legacy-breakdown"></div></div><button class="primary-button" id="restart-btn"><span data-i18n="playAgain">PLAY ANOTHER TERM</span><b>↗</b></button><button class="secondary-button" id="title-btn" data-i18n="returnTitle">RETURN TO TITLE</button></div>
+      </section>
+    </main>
+    <footer class="site-footer"><span>THE PEOPLE'S MANDATE <i>© 2026</i></span><span data-i18n="footerDisclaimer">FICTIONAL SIMULATION · NOT AN ACTUAL ELECTION FORECAST</span></footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
