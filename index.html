@@ -56,9 +56,11 @@
         <div class="setup-layout">
           <form id="setup-form" class="panel setup-form">
             <label for="party-name" data-i18n="partyName">MOVEMENT / PARTY NAME</label>
-            <input id="party-name" maxlength="32" value="People's Reform Alliance" required>
+            <!-- FIX #1: added name="party-name" -->
+            <input id="party-name" name="party-name" maxlength="32" value="People's Reform Alliance" required>
             <label for="party-tagline" data-i18n="tagline">YOUR SLOGAN</label>
-            <input id="party-tagline" maxlength="58" value="A fair future for everyone">
+            <!-- FIX #1: added name="party-tagline" -->
+            <input id="party-tagline" name="party-tagline" maxlength="58" value="A fair future for everyone">
             <label data-i18n="ideology">POLITICAL DIRECTION</label>
             <div class="choice-grid">
               <label class="choice-card"><input type="radio" name="ideology" value="Reformist" checked><span class="choice-symbol">✳</span><b data-i18n="reformist">Reformist</b><small data-i18n="reformistDesc">Institutional reform and clean governance</small></label>
@@ -69,7 +71,8 @@
             <label data-i18n="difficulty">CAMPAIGN DIFFICULTY</label>
             <div class="difficulty-row">
               <label><input type="radio" name="difficulty" value="easy"><span data-i18n="accessible">Accessible</span></label>
-              <label><input type="radio" name="difficulty" value="normal" checked><span data-i18n="standard">Standard</span></label>
+              <!-- FIX #2: value normal → standard (matches JS copy key) -->
+              <label><input type="radio" name="difficulty" value="standard" checked><span data-i18n="standard">Standard</span></label>
               <label><input type="radio" name="difficulty" value="hard"><span data-i18n="challenging">Challenging</span></label>
             </div>
             <button class="primary-button full-width" type="submit"><span data-i18n="formStart">ESTABLISH YOUR MOVEMENT</span><b>↗</b></button>
